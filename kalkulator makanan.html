@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIZIPEDIA</title>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #2196F3;
+            --light: #f5f7fa;
+            --dark: #333;
+            --gray: #757575;
+            --danger: #f44336;
+            --carbs: #FF9800;
+            --protein: #F44336;
+            --vegetable: #4CAF50;
+            --fruit: #9C27B0;
+            --snack: #795548;
+            --drink: #2196F3;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 900px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .food-categories {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-container {
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #searchInput {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        #searchButton {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .categories-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .category-tab {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            background-color: #e0e0e0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .category-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .category-tab.carbs.active { background-color: var(--carbs); }
+        .category-tab.protein.active { background-color: var(--protein); }
+        .category-tab.vegetable.active { background-color: var(--vegetable); }
+        .category-tab.fruit.active { background-color: var(--fruit); }
+        .category-tab.snack.active { background-color: var(--snack); }
+        .category-tab.drink.active { background-color: var(--drink); }
+        
+        .food-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            .food-items {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .food-item {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .food-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .food-item.carbs { border-left-color: var(--carbs); }
+        .food-item.protein { border-left-color: var(--protein); }
+        .food-item.vegetable { border-left-color: var(--vegetable); }
+        .food-item.fruit { border-left-color: var(--fruit); }
+        .food-item.snack { border-left-color: var(--snack); }
+        .food-item.drink { border-left-color: var(--drink); }
+        
+        .food-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .food-calories {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .meal-tracker {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .meal-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .meal-tab {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .meal-tab.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .meal-content {
+            min-height: 300px;
+        }
+        
+        .meal-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .meal-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .meal-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .meal-item-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meal-item-name {
+            font-weight: 600;
+        }
+        
+        .meal-item-category {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 3px;
+        }
+        
+        .meal-item-calories {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .delete-btn {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .meal-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        
+        .daily-summary {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .progress-container {
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state img {
+            max-width: 100px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pencatat Asupan Makanan Seharian</h1>
+            <p class="subtitle">Catat asupan makanan seharian Anda untuk gaya hidup sehat dan produktif</p>
+        </header>
+        
+        <div class="app-container">
+            <div class="food-categories">
+                <h2>Daftar Makanan</h2>
+                
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Cari makanan...">
+                        <button id="searchButton">Cari</button>
+                    </div>
+                </div>
+                
+                <div class="categories-tabs">
+                    <button class="category-tab carbs active" data-category="carbs">Karbohidrat</button>
+                    <button class="category-tab protein" data-category="protein">Protein</button>
+                    <button class="category-tab vegetable" data-category="vegetable">Sayuran</button>
+                    <button class="category-tab fruit" data-category="fruit">Buah</button>
+                    <button class="category-tab snack" data-category="snack">Cemilan</button>
+                    <button class="category-tab drink" data-category="drink">Minuman</button>
+                </div>
+                
+                <div class="food-items" id="foodItems">
+                    <!-- Daftar makanan akan dimuat di sini berdasarkan kategori -->
+                </div>
+            </div>
+            
+            <div class="meal-tracker">
+                <h2>Catatan Makanan Hari Ini</h2>
+                <div class="meal-tabs">
+                    <button class="meal-tab active" data-meal="breakfast">Sarapan</button>
+                    <button class="meal-tab" data-meal="lunch">Makan Siang</button>
+                    <button class="meal-tab" data-meal="dinner">Makan Malam</button>
+                </div>
+                
+                <div class="meal-content">
+                    <ul class="meal-list" id="breakfastList">
+                        <!-- Daftar makanan sarapan akan dimuat di sini -->
+                        <div class="empty-state">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyQzIgMTcuNTIgNi40OCAyMiAxMiAyMkMxNy41MiAyMiAyMiAxNy41MiAyMiAxMkMyMiA2LjQ4IDE3LjUyIDIgMTIgMlpNMTMgMTdIMTFWMTVIMTNWMTdaTTEzIDEzSDExVjdIMTNWMTNaIiBmaWxsPSIjODg4Ii8+Cjwvc3ZnPgo=" alt="Info">
+                            <p>Belum ada makanan yang ditambahkan untuk sarapan.</p>
+                        </div>
+                    </ul>
+                    
+                    <div class="meal-total">
+                        <span>Total Kalori Sarapan:</span>
+                        <span id="breakfastTotal">0 kalori</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="daily-summary">
+            <div class="summary-header">
+                <h2>Ringkasan Harian</h2>
+                <button id="resetButton">Reset Hari</button>
+            </div>
+            
+            <div class="summary-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalCalories">0</div>
+                    <div class="stat-label">Total Kalori</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="carbsCount">0</div>
+                    <div class="stat-label">Karbohidrat</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="proteinCount">0</div>
+                    <div class="stat-label">Protein</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="vegetableCount">0</div>
+                    <div class="stat-label">Sayuran</div>
+                </div>
+            </div>
+            
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data makanan dengan kategori
+        const foodData = {
+            carbs: [
+                { id: 1, name: "Nasi Putih", calories: 204, category: "carbs" },
+                { id: 2, name: "Roti Gandum", calories: 265, category: "carbs" },
+                { id: 3, name: "Mie Goreng", calories: 158, category: "carbs" },
+                { id: 4, name: "Kentang Rebus", calories: 87, category: "carbs" },
+                { id: 5, name: "Oatmeal", calories: 68, category: "carbs" },
+                { id: 6, name: "Pasta", calories: 131, category: "carbs" },
+                { id: 7, name: "Nasi Merah", calories: 110, category: "carbs" },
+                { id: 8, name: "Roti Tawar", calories: 160, category: "carbs" },
+                { id: 9, name: "Nasi Goreng", calories: 500, category: "carbs" },
+                { id: 10, name: "Bubur Ayam", calories: 350, category: "carbs" },
+                { id: 11, name: "Singkong Rebus", calories: 160, category: "carbs" },
+                { id: 12, name: "Lontong/Ketupat", calories: 140, category: "carbs" },
+                { id: 13, name: "Bihun", calories: 110, category: "carbs" },
+                { id: 14, name: "Burger", calories: 175, category: "carbs" },
+                { id: 15, name: "Martabak Manis", calories: 300, category: "carbs" }
+            ],
+            protein: [
+                { id: 16, name: "Ayam Panggang", calories: 165, category: "protein" },
+                { id: 17, name: "Telur Rebus", calories: 155, category: "protein" },
+                { id: 18, name: "Ikan Bakar", calories: 206, category: "protein" },
+                { id: 19, name: "Tahu", calories: 76, category: "protein" },
+                { id: 20, name: "Tempe", calories: 193, category: "protein" },
+                { id: 21, name: "Daging Sapi", calories: 250, category: "protein" },
+                { id: 22, name: "Udang", calories: 85, category: "protein" },
+                { id: 23, name: "Ikan Goreng", calories: 200, category: "protein" },
+                { id: 24, name: "Ayam Goreng", calories: 250, category: "protein" },
+                { id: 25, name: "Telur Dadar", calories: 180, category: "protein" },
+                { id: 26, name: "Sosis", calories: 150, category: "protein" },
+                { id: 27, name: "Nugget Ayam", calories: 250, category: "protein" }
+            ],
+            vegetable: [
+                { id: 28, name: "Brokoli Rebus", calories: 55, category: "vegetable" },
+                { id: 29, name: "Bayam", calories: 23, category: "vegetable" },
+                { id: 30, name: "Wortel", calories: 41, category: "vegetable" },
+                { id: 31, name: "Selada", calories: 15, category: "vegetable" },
+                { id: 32, name: "Kangkung", calories: 19, category: "vegetable" },
+                { id: 33, name: "Tomat", calories: 18, category: "vegetable" },
+                { id: 34, name: "Timun", calories: 15, category: "vegetable" },
+                { id: 35, name: "Kubis", calories: 25, category: "vegetable" },
+                { id: 36, name: "Kacang Panjang", calories: 40, category: "vegetable" },
+                { id: 37, name: "Tauge", calories: 30, category: "vegetable" },
+                { id: 38, name: "Labu Siam", calories: 20, category: "vegetable" },
+                { id: 39, name: "Terong", calories: 25, category: "vegetable" }
+            ],
+            fruit: [
+                { id: 40, name: "Apel", calories: 52, category: "fruit" },
+                { id: 41, name: "Pisang", calories: 89, category: "fruit" },
+                { id: 42, name: "Jeruk", calories: 47, category: "fruit" },
+                { id: 43, name: "Alpukat", calories: 160, category: "fruit" },
+                { id: 44, name: "Mangga", calories: 60, category: "fruit" },
+                { id: 45, name: "Semangka", calories: 30, category: "fruit" },
+                { id: 46, name: "Anggur", calories: 69, category: "fruit" },
+                { id: 47, name: "Pir", calories: 57, category: "fruit" },
+                { id: 48, name: "Stroberi", calories: 32, category: "fruit" },
+                { id: 49, name: "Nanas", calories: 50, category: "fruit" },
+                { id: 50, name: "Melon", calories: 34, category: "fruit" },
+                { id: 51, name: "Kiwi", calories: 61, category: "fruit" }
+            ],
+            snack: [
+                { id: 52, name: "Keripik Kentang", calories: 536, category: "snack" },
+                { id: 53, name: "Cokelat", calories: 546, category: "snack" },
+                { id: 54, name: "Kue", calories: 371, category: "snack" },
+                { id: 55, name: "Yogurt", calories: 61, category: "snack" },
+                { id: 56, name: "Kacang Almond", calories: 579, category: "snack" },
+                { id: 57, name: "Biskuit", calories: 460, category: "snack" },
+                { id: 58, name: "Es Krim", calories: 207, category: "snack" },
+                { id: 59, name: "Kerupuk", calories: 400, category: "snack" },
+                { id: 60, name: "Popcorn", calories: 375, category: "snack" },
+                { id: 61, name: "Puding", calories: 150, category: "snack" },
+                { id: 62, name: "Donat", calories: 195, category: "snack" }
+            ],
+            drink: [
+                { id: 63, name: "Air Putih", calories: 0, category: "drink" },
+                { id: 64, name: "Jus Jeruk", calories: 45, category: "drink" },
+                { id: 65, name: "Kopi Hitam", calories: 2, category: "drink" },
+                { id: 66, name: "Teh Tawar", calories: 1, category: "drink" },
+                { id: 67, name: "Susu", calories: 42, category: "drink" },
+                { id: 68, name: "Soda", calories: 41, category: "drink" },
+                { id: 69, name: "Jus Apel", calories: 46, category: "drink" },
+                { id: 70, name: "Jus Tomat", calories: 17, category: "drink" },
+                { id: 71, name: "Es Teh Manis", calories: 100, category: "drink" },
+                { id: 72, name: "Kopi Susu", calories: 50, category: "drink" },
+                { id: 73, name: "Smoothie Buah", calories: 120, category: "drink" },
+                { id: 74, name: "Air Kelapa", calories: 19, category: "drink" }
+            ]
+        };
+
+        // Data untuk melacak makanan yang dikonsumsi
+        let consumedFoods = {
+            breakfast: [],
+            lunch: [],
+            dinner: []
+        };
+
+        // Target kalori harian
+        const dailyCalorieTarget = 2000;
+
+        // Elemen DOM
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const foodItemsContainer = document.getElementById('foodItems');
+        const mealTabs = document.querySelectorAll('.meal-tab');
+        const breakfastList = document.getElementById('breakfastList');
+        const breakfastTotal = document.getElementById('breakfastTotal');
+        const totalCaloriesEl = document.getElementById('totalCalories');
+        const carbsCountEl = document.getElementById('carbsCount');
+        const proteinCountEl = document.getElementById('proteinCount');
+        const vegetableCountEl = document.getElementById('vegetableCount');
+        const calorieProgressBar = document.getElementById('calorieProgress');
+        const targetCaloriesEl = document.getElementById('targetCalories');
+        const resetButton = document.getElementById('resetButton');
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+
+        // Variabel untuk melacak kategori dan waktu makan aktif
+        let activeCategory = 'carbs';
+        let activeMeal = 'breakfast';
+        let searchMode = false;
+
+        // Inisialisasi aplikasi
+        function init() {
+            loadFoodItems(activeCategory);
+            setupEventListeners();
+            updateMealDisplay();
+            updateDailySummary();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Event listener untuk tab kategori
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const category = tab.getAttribute('data-category');
+                    setActiveCategory(category);
+                    loadFoodItems(category);
+                    searchMode = false;
+                    searchInput.value = '';
+                });
+            });
+
+            // Event listener untuk tab waktu makan
+            mealTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const meal = tab.getAttribute('data-meal');
+                    setActiveMeal(meal);
+                    updateMealDisplay();
+                });
+            });
+
+            // Event listener untuk tombol reset
+            resetButton.addEventListener('click', resetDay);
+            
+            // Event listener untuk pencarian
+            searchButton.addEventListener('click', performSearch);
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        }
+
+        // Set kategori aktif
+        function setActiveCategory(category) {
+            categoryTabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.category-tab.${category}`).classList.add('active');
+            activeCategory = category;
+        }
+
+        // Set waktu makan aktif
+        function setActiveMeal(meal) {
+            mealTabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.meal-tab[data-meal="${meal}"]`).classList.add('active');
+            activeMeal = meal;
+        }
+
+        // Memuat daftar makanan berdasarkan kategori
+        function loadFoodItems(category) {
+            foodItemsContainer.innerHTML = '';
+            
+            if (foodData[category]) {
+                foodData[category].forEach(food => {
+                    const foodItem = document.createElement('div');
+                    foodItem.className = `food-item ${food.category}`;
+                    foodItem.innerHTML = `
+                        <div class="food-name">${food.name}</div>
+                        <div class="food-calories">${food.calories} kalori</div>
+                    `;
+                    foodItem.addEventListener('click', () => addFoodToMeal(food));
+                    foodItemsContainer.appendChild(foodItem);
+                });
+            }
+        }
+
+        // Menampilkan hasil pencarian
+        function displaySearchResults(results) {
+            foodItemsContainer.innerHTML = '';
+            
+            if (results.length === 0) {
+                foodItemsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>Tidak ada makanan yang ditemukan.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            results.forEach(food => {
+                const foodItem = document.createElement('div');
+                foodItem.className = `food-item ${food.category}`;
+                foodItem.innerHTML = `
+                    <div class="food-name">${food.name}</div>
+                    <div class="food-calories">${food.calories} kalori</div>
+                    <div class="food-category">${getCategoryName(food.category)}</div>
+                `;
+                foodItem.addEventListener('click', () => addFoodToMeal(food));
+                foodItemsContainer.appendChild(foodItem);
+            });
+        }
+
+        // Melakukan pencarian
+        function performSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            
+            if (searchTerm === '') {
+                searchMode = false;
+                loadFoodItems(activeCategory);
+                return;
+            }
+            
+            searchMode = true;
+            
+            // Gabungkan semua makanan dari semua kategori
+            const allFoods = Object.values(foodData).flat();
+            
+            // Filter makanan berdasarkan kata kunci
+            const results = allFoods.filter(food => 
+                food.name.toLowerCase().includes(searchTerm)
+            );
+            
+            displaySearchResults(results);
+        }
+
+        // Menambahkan makanan ke waktu makan yang aktif
+        function addFoodToMeal(food) {
+            consumedFoods[activeMeal].push({
+                ...food,
+                id: Date.now() // ID unik untuk setiap item yang ditambahkan
+            });
+            
+            updateMealDisplay();
+            updateDailySummary();
+        }
+
+        // Menghapus makanan dari waktu makan
+        function removeFoodFromMeal(meal, foodId) {
+            consumedFoods[meal] = consumedFoods[meal].filter(item => item.id !== foodId);
+            updateMealDisplay();
+            updateDailySummary();
+        }
+
+        // Memperbarui tampilan waktu makan
+        function updateMealDisplay() {
+            // Untuk sarapan
+            if (consumedFoods.breakfast.length === 0) {
+                breakfastList.innerHTML = `
+                    <div class="empty-state">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyQzIgMTcuNTIgNi40OCAyMiAxMiAyMkMxNy41MiAyMiAyMiAxNy41MiAyMjEyQzIyIDYuNDggMTcuNTIgMiAxMiAyWk0xMyAxN0gxMVYxNUgxM1YxN1pNMTMgMTNIMTFWN0gxM1YxM1oiIGZpbGw9IiM4ODgiLz4KPC9zdmc+Cg==" alt="Info">
+                        <p>Belum ada makanan yang ditambahkan untuk sarapan.</p>
+                    </div>
+                `;
+            } else {
+                breakfastList.innerHTML = '';
+                consumedFoods.breakfast.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'meal-list-item';
+                    listItem.innerHTML = `
+                        <div class="meal-item-info">
+                            <div class="meal-item-name">${item.name}</div>
+                            <div class="meal-item-category">${getCategoryName(item.category)}</div>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div class="meal-item-calories">${item.calories} kal</div>
+                            <button class="delete-btn" data-id="${item.id}">×</button>
+                        </div>
+                    `;
+                    breakfastList.appendChild(listItem);
+                });
+                
+                // Tambahkan event listener untuk tombol hapus
+                breakfastList.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const foodId = parseInt(e.target.getAttribute('data-id'));
+                        removeFoodFromMeal('breakfast', foodId);
+                    });
+                });
+            }
+            
+            // Hitung total kalori sarapan
+            const breakfastCalories = consumedFoods.breakfast.reduce((total, item) => total + item.calories, 0);
+            breakfastTotal.textContent = `${breakfastCalories} kalori`;
+            
+            // Untuk makan siang dan malam, kita akan buat elemen jika belum ada
+            if (!document.getElementById('lunchList')) {
+                const lunchContent = document.querySelector('.meal-content');
+                const lunchSection = document.createElement('div');
+                lunchSection.className = 'meal-section';
+                lunchSection.innerHTML = `
+                    <ul class="meal-list" id="lunchList">
+                        <div class="empty-state">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyQzIgMTcuNTIgNi40OCAyMiAxMiAyMkMxNy41MiAyMiAyMiAxNy41MiAyMjEyQzIyIDYuNDggMTcuNTIgMiAxMiAyWk0xMyAxN0gxMVYxNUgxM1YxN1pNMTMgMTNIMTFWN0gxM1YxM1oiIGZpbGw9IiM4ODgiLz4KPC9zdmc+Cg==" alt="Info">
+                            <p>Belum ada makanan yang ditambahkan untuk makan siang.</p>
+                        </div>
+                    </ul>
+                    <div class="meal-total">
+                        <span>Total Kalori Makan Siang:</span>
+                        <span id="lunchTotal">0 kalori</span>
+                    </div>
+                `;
+                lunchContent.appendChild(lunchSection);
+            }
+            
+            if (!document.getElementById('dinnerList')) {
+                const dinnerContent = document.querySelector('.meal-content');
+                const dinnerSection = document.createElement('div');
+                dinnerSection.className = 'meal-section';
+                dinnerSection.innerHTML = `
+                    <ul class="meal-list" id="dinnerList">
+                        <div class="empty-state">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyQzIgMTcuNTIgNi40OCAyMiAxMiAyMkMxNy41MiAyMiAyMiAxNy41MiAyMjEyQzIyIDYuNDggMTcuNTIgMiAxMiAyWk0xMyAxN0gxMVYxNUgxM1YxN1pNMTMgMTNIMTFWN0gxM1YxM1oiIGZpbGw9IiM4ODgiLz4KPC9zdmc+Cg==" alt="Info">
+                            <p>Belum ada makanan yang ditambahkan untuk makan malam.</p>
+                        </div>
+                    </ul>
+                    <div class="meal-total">
+                        <span>Total Kalori Makan Malam:</span>
+                        <span id="dinnerTotal">0 kalori</span>
+                    </div>
+                `;
+                dinnerContent.appendChild(dinnerSection);
+            }
+            
+            // Update untuk makan siang dan malam
+            updateMealList('lunch');
+            updateMealList('dinner');
+            
+            // Tampilkan hanya bagian yang aktif
+            document.querySelectorAll('.meal-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            document.getElementById(`${activeMeal}List`).parentElement.style.display = 'block';
+        }
+
+        // Memperbarui daftar makanan untuk waktu makan tertentu
+        function updateMealList(meal) {
+            const mealList = document.getElementById(`${meal}List`);
+            const mealTotal = document.getElementById(`${meal}Total`);
+            
+            if (consumedFoods[meal].length === 0) {
+                mealList.innerHTML = `
+                    <div class="empty-state">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyQzIgMTcuNTIgNi40OCAyMiAxMiAyMkMxNy41MiAyMiAyMiAxNy41MiAyMjEyQzIyIDYuNDggMTcuNTIgMiAxMiAyWk0xMyAxN0gxMVYxNUgxM1YxN1pNMTMgMTNIMTFWN0gxM1YxM1oiIGZpbGw9IiM4ODgiLz4KPC9zdmc+Cg==" alt="Info">
+                        <p>Belum ada makanan yang ditambahkan untuk ${getMealName(meal)}.</p>
+                    </div>
+                `;
+            } else {
+                mealList.innerHTML = '';
+                consumedFoods[meal].forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'meal-list-item';
+                    listItem.innerHTML = `
+                        <div class="meal-item-info">
+                            <div class="meal-item-name">${item.name}</div>
+                            <div class="meal-item-category">${getCategoryName(item.category)}</div>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div class="meal-item-calories">${item.calories} kal</div>
+                            <button class="delete-btn" data-id="${item.id}">×</button>
+                        </div>
+                    `;
+                    mealList.appendChild(listItem);
+                });
+                
+                // Tambahkan event listener untuk tombol hapus
+                mealList.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const foodId = parseInt(e.target.getAttribute('data-id'));
+                        removeFoodFromMeal(meal, foodId);
+                    });
+                });
+            }
+            
+            // Hitung total kalori
+            const mealCalories = consumedFoods[meal].reduce((total, item) => total + item.calories, 0);
+            mealTotal.textContent = `${mealCalories} kalori`;
+        }
+
+        // Memperbarui ringkasan harian
+        function updateDailySummary() {
+            // Hitung total kalori harian
+            const totalCalories = Object.values(consumedFoods).flat().reduce((total, item) => total + item.calories, 0);
+            totalCaloriesEl.textContent = totalCalories;
+            
+            // Hitung jumlah item per kategori
+            const allFoods = Object.values(consumedFoods).flat();
+            const carbsCount = allFoods.filter(item => item.category === 'carbs').length;
+            const proteinCount = allFoods.filter(item => item.category === 'protein').length;
+            const vegetableCount = allFoods.filter(item => item.category === 'vegetable').length;
+            
+            carbsCountEl.textContent = carbsCount;
+            proteinCountEl.textContent = proteinCount;
+            vegetableCountEl.textContent = vegetableCount;
+            
+            // Update progress bar
+            const percentage = Math.min((totalCalories / dailyCalorieTarget) * 100, 100);
+            calorieProgressBar.style.width = `${percentage}%`;
+        }
+
+        // Reset hari
+        function resetDay() {
+            if (confirm('Apakah Anda yakin ingin mereset semua makanan hari ini?')) {
+                consumedFoods = {
+                    breakfast: [],
+                    lunch: [],
+                    dinner: []
+                };
+                updateMealDisplay();
+                updateDailySummary();
+            }
+        }
+
+        // Helper functions
+        function getCategoryName(category) {
+            const categoryNames = {
+                carbs: 'Karbohidrat',
+                protein: 'Protein',
+                vegetable: 'Sayuran',
+                fruit: 'Buah',
+                snack: 'Cemilan',
+                drink: 'Minuman'
+            };
+            return categoryNames[category] || category;
+        }
+
+        function getMealName(meal) {
+            const mealNames = {
+                breakfast: 'sarapan',
+                lunch: 'makan siang',
+                dinner: 'makan malam'
+            };
+            return mealNames[meal] || meal;
+        }
+
+        // Inisialisasi aplikasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
