@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIZIPEDIA</title>
+    <style>
+        :root {
+            --primary-blue: #1e88e5;
+            --light-blue: #bbdefb;
+            --dark-blue: #1565c0;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --text-color: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--white);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .category-section {
+            margin-bottom: 2.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .category-header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+        }
+        
+        .food-item {
+            background-color: var(--white);
+            border-radius: 6px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .food-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .food-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-blue);
+        }
+        
+        .food-calories {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .collapsed .food-grid {
+            display: none;
+        }
+        
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .food-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .category-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Daftar Makanan & Kalori</h1>
+        <p class="subtitle">Kelompokkan berdasarkan jenis makanan</p>
+    </header>
+    
+    <div class="container">
+        <!-- Karbohidrat -->
+        <section class="category-section" id="carbohydrates">
+            <div class="category-header">
+                <h2 class="category-title">Karbohidrat</h2>
+                <button class="toggle-btn">-</button>
+            </div>
+            <div class="food-grid" id="carbohydrates-grid">
+                <!-- Data akan diisi oleh JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Protein -->
+        <section class="category-section" id="protein">
+            <div class="category-header">
+                <h2 class="category-title">Protein</h2>
+                <button class="toggle-btn">-</button>
+            </div>
+            <div class="food-grid" id="protein-grid">
+                <!-- Data akan diisi oleh JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Sayur -->
+        <section class="category-section" id="vegetables">
+            <div class="category-header">
+                <h2 class="category-title">Sayur</h2>
+                <button class="toggle-btn">-</button>
+            </div>
+            <div class="food-grid" id="vegetables-grid">
+                <!-- Data akan diisi oleh JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Buah -->
+        <section class="category-section" id="fruits">
+            <div class="category-header">
+                <h2 class="category-title">Buah</h2>
+                <button class="toggle-btn">-</button>
+            </div>
+            <div class="food-grid" id="fruits-grid">
+                <!-- Data akan diisi oleh JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Minuman -->
+        <section class="category-section" id="beverages">
+            <div class="category-header">
+                <h2 class="category-title">Minuman</h2>
+                <button class="toggle-btn">-</button>
+            </div>
+            <div class="food-grid" id="beverages-grid">
+                <!-- Data akan diisi oleh JavaScript -->
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 Daftar Makanan & Kalori. Semua hak dilindungi.</p>
+    </footer>
+    
+    <script>
+        // Data makanan dengan 50 item per kategori
+        const foodData = {
+            carbohydrates: [
+                { name: "Nasi Putih", calories: 130 },
+                { name: "Roti Gandum", calories: 265 },
+                { name: "Kentang Rebus", calories: 87 },
+                { name: "Pasta", calories: 131 },
+                { name: "Oatmeal", calories: 68 },
+                { name: "Jagung Rebus", calories: 96 },
+                { name: "Ubi Jalar", calories: 86 },
+                { name: "Singkong Rebus", calories: 160 },
+                { name: "Mie Telur", calories: 138 },
+                { name: "Bihun", calories: 109 },
+                { name: "Kwetiau", calories: 140 },
+                { name: "Sereal Sarapan", calories: 379 },
+                { name: "Kroket Kentang", calories: 210 },
+                { name: "Bubur Ayam", calories: 85 },
+                { name: "Lontong", calories: 35 },
+                { name: "Ketupat", calories: 32 },
+                { name: "Nasi Goreng", calories: 163 },
+                { name: "Mie Goreng", calories: 150 },
+                { name: "Bubur Sumsum", calories: 120 },
+                { name: "Bubur Kacang Hijau", calories: 110 },
+                { name: "Tape Ketan", calories: 180 },
+                { name: "Lemper", calories: 160 },
+                { name: "Risotto", calories: 130 },
+                { name: "Quinoa", calories: 120 },
+                { name: "Bulgur", calories: 83 },
+                { name: "Tortilla", calories: 140 },
+                { name: "Pancake", calories: 227 },
+                { name: "Waffle", calories: 291 },
+                { name: "Bagel", calories: 245 },
+                { name: "Croissant", calories: 406 },
+                { name: "Donat", calories: 452 },
+                { name: "Pretzel", calories: 380 },
+                { name: "Kerupuk", calories: 400 },
+                { name: "Emping", calories: 350 },
+                { name: "Biskuit", calories: 460 },
+                { name: "Kue Lapis", calories: 320 },
+                { name: "Martabak Manis", calories: 252 },
+                { name: "Klepon", calories: 40 },
+                { name: "Onde-onde", calories: 55 },
+                { name: "Lumpia", calories: 150 },
+                { name: "Pastel", calories: 200 },
+                { name: "Risoles", calories: 180 },
+                { name: "Kroket", calories: 210 },
+                { name: "Perkedel", calories: 120 },
+                { name: "Bakwan", calories: 140 },
+                { name: "Tahu Isi", calories: 130 },
+                { name: "Tempe Goreng", calories: 150 },
+                { name: "Keripik Kentang", calories: 536 },
+                { name: "Keripik Singkong", calories: 490 },
+                { name: "Emping Melinjo", calories: 350 }
+            ],
+            protein: [
+                { name: "Daging Sapi", calories: 250 },
+                { name: "Ayam Panggang", calories: 165 },
+                { name: "Ikan Salmon", calories: 206 },
+                { name: "Telur Rebus", calories: 155 },
+                { name: "Tahu", calories: 76 },
+                { name: "Tempe", calories: 193 },
+                { name: "Udang", calories: 85 },
+                { name: "Daging Kambing", calories: 206 },
+                { name: "Ikan Tuna", calories: 184 },
+                { name: "Ikan Lele", calories: 105 },
+                { name: "Ikan Gurame", calories: 110 },
+                { name: "Cumi-cumi", calories: 92 },
+                { name: "Kerang", calories: 86 },
+                { name: "Kepiting", calories: 87 },
+                { name: "Daging Bebek", calories: 337 },
+                { name: "Daging Ayam Kalkun", calories: 189 },
+                { name: "Daging Kelinci", calories: 173 },
+                { name: "Telur Puyuh", calories: 158 },
+                { name: "Hati Ayam", calories: 167 },
+                { name: "Ampela Ayam", calories: 94 },
+                { name: "Usus Ayam", calories: 159 },
+                { name: "Paru Sapi", calories: 224 },
+                { name: "Otak Sapi", calories: 143 },
+                { name: "Lidah Sapi", calories: 224 },
+                { name: "Daging Sapi Cincang", calories: 332 },
+                { name: "Daging Ayam Cincang", calories: 143 },
+                { name: "Daging Ikan Cakalang", calories: 139 },
+                { name: "Daging Ikan Tongkol", calories: 144 },
+                { name: "Daging Ikan Tenggiri", calories: 105 },
+                { name: "Daging Ikan Bandeng", calories: 123 },
+                { name: "Daging Ikan Mas", calories: 96 },
+                { name: "Daging Ikan Nila", calories: 96 },
+                { name: "Daging Ikan Patin", calories: 148 },
+                { name: "Daging Ikan Mujair", calories: 96 },
+                { name: "Daging Ikan Bawal", calories: 92 },
+                { name: "Daging Ikan Kakap", calories: 92 },
+                { name: "Daging Ikan Baronang", calories: 100 },
+                { name: "Daging Ikan Kerapu", calories: 92 },
+                { name: "Daging Ikan Baronang", calories: 100 },
+                { name: "Daging Ikan Kembung", calories: 205 },
+                { name: "Daging Ikan Sarden", calories: 208 },
+                { name: "Daging Ikan Makarel", calories: 205 },
+                { name: "Daging Ikan Teri", calories: 131 },
+                { name: "Daging Ikan Asin", calories: 193 },
+                { name: "Daging Cumi Asin", calories: 157 },
+                { name: "Daging Udang Kering", calories: 296 },
+                { name: "Daging Rebon", calories: 87 },
+                { name: "Daging Jangkrik", calories: 121 },
+                { name: "Daging Belalang", calories: 153 },
+                { name: "Daging Ulat Sagu", calories: 375 }
+            ],
+            vegetables: [
+                { name: "Bayam", calories: 23 },
+                { name: "Kangkung", calories: 20 },
+                { name: "Sawi Hijau", calories: 22 },
+                { name: "Brokoli", calories: 34 },
+                { name: "Wortel", calories: 41 },
+                { name: "Kubis", calories: 25 },
+                { name: "Kembang Kol", calories: 25 },
+                { name: "Selada", calories: 15 },
+                { name: "Timun", calories: 15 },
+                { name: "Tomat", calories: 18 },
+                { name: "Terong", calories: 25 },
+                { name: "Labu Siam", calories: 19 },
+                { name: "Labu Kuning", calories: 26 },
+                { name: "Buncis", calories: 31 },
+                { name: "Kacang Panjang", calories: 47 },
+                { name: "Tauge", calories: 30 },
+                { name: "Seledri", calories: 14 },
+                { name: "Daun Singkong", calories: 37 },
+                { name: "Daun Pepaya", calories: 39 },
+                { name: "Daun Melinjo", calories: 44 },
+                { name: "Daun Katuk", calories: 35 },
+                { name: "Daun Kemangi", calories: 22 },
+                { name: "Daun Pandan", calories: 0 },
+                { name: "Daun Salam", calories: 0 },
+                { name: "Daun Jeruk", calories: 0 },
+                { name: "Daun Serai", calories: 0 },
+                { name: "Daun Kencur", calories: 0 },
+                { name: "Daun Kunyit", calories: 0 },
+                { name: "Daun Jahe", calories: 0 },
+                { name: "Daun Lengkuas", calories: 0 },
+                { name: "Daun Bawang", calories: 32 },
+                { name: "Bawang Merah", calories: 40 },
+                { name: "Bawang Putih", calories: 149 },
+                { name: "Bawang Bombay", calories: 40 },
+                { name: "Cabai Merah", calories: 40 },
+                { name: "Cabai Hijau", calories: 40 },
+                { name: "Cabai Rawit", calories: 40 },
+                { name: "Paprika Merah", calories: 31 },
+                { name: "Paprika Hijau", calories: 20 },
+                { name: "Paprika Kuning", calories: 27 },
+                { name: "Jagung Muda", calories: 86 },
+                { name: "Rebung", calories: 27 },
+                { name: "Asparagus", calories: 20 },
+                { name: "Bit", calories: 43 },
+                { name: "Lobak", calories: 16 },
+                { name: "Selada Air", calories: 11 },
+                { name: "Pakcoy", calories: 13 },
+                { name: "Kailan", calories: 36 },
+                { name: "Okra", calories: 33 },
+                { name: "Zukini", calories: 17 }
+            ],
+            fruits: [
+                { name: "Apel", calories: 52 },
+                { name: "Pisang", calories: 89 },
+                { name: "Jeruk", calories: 47 },
+                { name: "Anggur", calories: 69 },
+                { name: "Semangka", calories: 30 },
+                { name: "Melon", calories: 34 },
+                { name: "Pepaya", calories: 43 },
+                { name: "Mangga", calories: 60 },
+                { name: "Nanas", calories: 50 },
+                { name: "Alpukat", calories: 160 },
+                { name: "Stroberi", calories: 32 },
+                { name: "Blueberry", calories: 57 },
+                { name: "Raspberry", calories: 52 },
+                { name: "Blackberry", calories: 43 },
+                { name: "Ceri", calories: 50 },
+                { name: "Kiwi", calories: 61 },
+                { name: "Leci", calories: 66 },
+                { name: "Rambutan", calories: 68 },
+                { name: "Durian", calories: 147 },
+                { name: "Manggis", calories: 73 },
+                { name: "Sirsak", calories: 66 },
+                { name: "Sukun", calories: 191 },
+                { name: "Nangka", calories: 95 },
+                { name: "Salak", calories: 82 },
+                { name: "Sawo", calories: 83 },
+                { name: "Belimbing", calories: 31 },
+                { name: "Jambu Biji", calories: 68 },
+                { name: "Jambu Air", calories: 25 },
+                { name: "Delima", calories: 83 },
+                { name: "Kurma", calories: 282 },
+                { name: "Ara", calories: 74 },
+                { name: "Kismis", calories: 299 },
+                { name: "Prune", calories: 240 },
+                { name: "Persik", calories: 39 },
+                { name: "Plum", calories: 46 },
+                { name: "Aprikot", calories: 48 },
+                { name: "Markisa", calories: 97 },
+                { name: "Lemon", calories: 29 },
+                { name: "Lime", calories: 30 },
+                { name: "Jeruk Bali", calories: 42 },
+                { name: "Jeruk Nipis", calories: 30 },
+                { name: "Jeruk Mandarin", calories: 53 },
+                { name: "Pir", calories: 57 },
+                { name: "Kesemek", calories: 70 },
+                { name: "Srikaya", calories: 94 },
+                { name: "Cempedak", calories: 117 },
+                { name: "Buni", calories: 43 },
+                { name: "Gandaria", calories: 64 },
+                { name: "Kecapi", calories: 57 },
+                { name: "Matoa", calories: 65 }
+            ],
+            beverages: [
+                { name: "Air Putih", calories: 0 },
+                { name: "Teh Tawar", calories: 1 },
+                { name: "Kopi Hitam", calories: 2 },
+                { name: "Susu Sapi", calories: 61 },
+                { name: "Susu Kedelai", calories: 54 },
+                { name: "Jus Jeruk", calories: 45 },
+                { name: "Jus Apel", calories: 46 },
+                { name: "Jus Tomat", calories: 17 },
+                { name: "Jus Wortel", calories: 40 },
+                { name: "Es Kelapa Muda", calories: 19 },
+                { name: "Es Cincau", calories: 30 },
+                { name: "Es Campur", calories: 150 },
+                { name: "Es Teler", calories: 200 },
+                { name: "Es Dawet", calories: 120 },
+                { name: "Bajigur", calories: 80 },
+                { name: "Bandrek", calories: 90 },
+                { name: "Wedang Jahe", calories: 40 },
+                { name: "Wedang Ronde", calories: 180 },
+                { name: "Bir Pletok", calories: 50 },
+                { name: "Sekoteng", calories: 120 },
+                { name: "Cendol", calories: 110 },
+                { name: "Es Kopyor", calories: 130 },
+                { name: "Es Pisang Ijo", calories: 180 },
+                { name: "Es Oyen", calories: 200 },
+                { name: "Es Doger", calories: 170 },
+                { name: "Es Goyang", calories: 160 },
+                { name: "Es Kacang Merah", calories: 140 },
+                { name: "Es Kacang Hijau", calories: 130 },
+                { name: "Es Tape", calories: 120 },
+                { name: "Es Cendol", calories: 110 },
+                { name: "Es Kelapa Muda", calories: 100 },
+                { name: "Es Jeruk", calories: 90 },
+                { name: "Es Sirup", calories: 80 },
+                { name: "Es Teh Manis", calories: 70 },
+                { name: "Es Kopi Susu", calories: 60 },
+                { name: "Es Cappuccino", calories: 120 },
+                { name: "Es Latte", calories: 110 },
+                { name: "Es Mocha", calories: 130 },
+                { name: "Es Americano", calories: 5 },
+                { name: "Es Macchiato", calories: 100 },
+                { name: "Es Flat White", calories: 90 },
+                { name: "Es Affogato", calories: 140 },
+                { name: "Es Frappuccino", calories: 160 },
+                { name: "Es Smoothie", calories: 120 },
+                { name: "Es Milkshake", calories: 180 },
+                { name: "Es Yoghurt", calories: 70 },
+                { name: "Es Lassi", calories: 80 },
+                { name: "Es Chai Latte", calories: 100 },
+                { name: "Es Matcha Latte", calories: 90 },
+                { name: "Es Taro Latte", calories: 110 }
+            ]
+        };
+
+        // Fungsi untuk mengisi data makanan ke grid
+        function populateFoodGrid() {
+            for (const category in foodData) {
+                const grid = document.getElementById(`${category}-grid`);
+                grid.innerHTML = '';
+                
+                foodData[category].forEach(food => {
+                    const foodItem = document.createElement('div');
+                    foodItem.className = 'food-item';
+                    foodItem.innerHTML = `
+                        <div class="food-name">${food.name}</div>
+                        <div class="food-calories">${food.calories} kkal per 100g</div>
+                    `;
+                    grid.appendChild(foodItem);
+                });
+            }
+        }
+
+        // Fungsi untuk toggle collapse/expand kategori
+        function setupToggleButtons() {
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+            
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const section = this.closest('.category-section');
+                    section.classList.toggle('collapsed');
+                    this.textContent = section.classList.contains('collapsed') ? '+' : '-';
+                });
+            });
+        }
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            populateFoodGrid();
+            setupToggleButtons();
+        });
+    </script>
+</body>
+</html>
